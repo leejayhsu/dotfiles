@@ -8,7 +8,6 @@ set mouse=a
 set encoding=UTF-8
 let mapleader = " " " map leader to Space
 map <leader><space> :noh<CR>
-set foldlevel=99
 
 " Plugins -------------------------------------------------------------------
 " Specify a directory for plugins
@@ -82,7 +81,7 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').file_browser()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>ft <cmd>lua require('telescope.builtin').treesitter()<cr>
-nnoremap <leader>fa <cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>
+nnoremap <leader>fa <cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>
 
 " ControlP ------------------------------------------------------------------
 " let g:ctrlp_map = '<leader>p'
@@ -92,6 +91,18 @@ nnoremap <leader>fa <cmd>lua require('telescope.builtin').lsp_dynamic_workspace_
 
 
 " CoC -----------------------------------------------------------------------
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+
 " nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
@@ -128,6 +139,7 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " TreeSitter ----------------------------------------------------------------
 set foldmethod=expr
+" set foldlevel=99
 set foldexpr=nvim_treesitter#foldexpr()
 
 lua <<EOF
