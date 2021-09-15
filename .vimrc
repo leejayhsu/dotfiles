@@ -8,7 +8,8 @@ set mouse=a
 set encoding=UTF-8
 let mapleader = " " " map leader to Space
 map <leader><space> :noh<CR>
-
+set foldlevel=99
+set cursorline
 " Plugins -------------------------------------------------------------------
 " Specify a directory for plugins
 " - For Neovim: stdpath('data') . '/plugged'
@@ -21,9 +22,10 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'dense-analysis/ale'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Plug 'ctrlpvim/ctrlp.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -35,14 +37,22 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'kevinoid/vim-jsonc'
 " Plug 'junegunn/seoul256.vim'
 Plug 'tomasiser/vim-code-dark'
+Plug 'nanotech/jellybeans.vim'
+Plug 'Mofiqul/vscode.nvim'
+Plug 'neovim/nvim-lspconfig'
 " Initialize plugin system
 call plug#end()
 
+lua << EOF
+require'lspconfig'.pyright.setup{}
+EOF
 
 " Color Specific Settings ---------------------------------------------------
 " colorscheme jellybeans
-colorscheme codedark
-let g:airline_theme = 'codedark'
+" colorscheme codedark
+" let g:airline_theme = 'codedark'
+let g:vscode_style = "dark"
+colorscheme vscode
 
 " Nerd Tree -----------------------------------------------------------------
 " autocmd VimEnter * NERDTree | wincmd p
@@ -81,7 +91,12 @@ nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>fb <cmd>lua require('telescope.builtin').file_browser()<cr>
 nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>ft <cmd>lua require('telescope.builtin').treesitter()<cr>
-nnoremap <leader>fa <cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>
+nnoremap <leader>fa <cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>
+nnoremap <leader>fr <cmd>lua require('telescope.builtin').lsp_references()<cr>
+nnoremap <leader>fd <cmd>lua require('telescope.builtin').lsp_definitions()<cr>
+nnoremap <leader>fs <cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>
+nnoremap <leader>fc <cmd>lua require('telescope.builtin').lsp_code_actions()<cr>
+nnoremap <leader>fi <cmd>lua require('telescope.builtin').lsp_implementations()<cr>
 
 " ControlP ------------------------------------------------------------------
 " let g:ctrlp_map = '<leader>p'
