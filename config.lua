@@ -180,6 +180,14 @@ lvim.lsp.null_ls.setup = {
 --     exe = "flake8",
 --   }
 -- }
+lvim.lang.go.formatters = {
+  {
+    exe = "gofmt"
+  },
+    {
+        exe = "goimports"
+    }
+}
 lvim.lang.json.formatters = {
   {
     exe = "prettier"

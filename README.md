@@ -8,6 +8,12 @@ ln -sf ~/dotfiles/config.lua ~/.config/lvim
 ```
 
 ### requirements
+required for yaml lsp
+
+```
+npm install --global yarn
+```
+
 ```
 brew install ripgrep
 ```
