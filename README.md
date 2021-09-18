@@ -6,3 +6,11 @@ To set up the symlink, do (this assumes you cloned this to your home directory),
 ```shell
 ln -sf ~/dotfiles/config.lua ~/.config/lvim
 ```
+
+### requirements
+```
+brew install ripgrep
+```
+```
+npm install --save-dev --save-exact prettier
+```
