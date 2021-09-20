@@ -26,3 +26,11 @@ brew install shellcheck
 ```
 cargo install shellharden
 ```
+then add this to .zshrc
+```
+export PATH="/Users/lhsu/.cargo/bin:$PATH"
+```
+(install go first)
+```
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
+```
