@@ -20,3 +20,9 @@ brew install ripgrep
 ```
 npm install --save-dev --save-exact prettier
 ```
+```
+brew install shellcheck
+```
+```
+cargo install shellharden
+```
