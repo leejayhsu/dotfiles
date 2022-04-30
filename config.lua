@@ -10,9 +10,9 @@ an executable
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save = true
--- vim.g.vscode_style = "dark"
-lvim.colorscheme = "tokyonight"
+lvim.format_on_save = false
+vim.g.vscode_style = "dark"
+lvim.colorscheme = "onedarker"
 vim.g.tokyonight_style = "storm"
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -49,6 +49,9 @@ lvim.builtin.which_key.mappings["f"] = {
   f = { "<cmd>lua require('telescope.builtin').find_files()<cr>", "Files" },
   s = { "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>", "Workspace Symbols" },
   g = { "<cmd>lua require('telescope.builtin').live_grep()<cr>", "String Grep" },
+  d = { "<cmd>lua require('telescope.builtin').lsp_document_diagnostics()<cr>", "Document Diagnostics" },
+  a = { "<cmd>lua require('telescope.builtin').lsp_range_code_actions()<cr>", "Code Actions" },
+  
 }
 lvim.builtin.which_key.mappings["w"] = {
   name = "+Window",
@@ -63,6 +66,30 @@ lvim.builtin.which_key.mappings["w"] = {
   v = { "<C-w>v", "split window vertical" },
   q = { "<C-w>q", "close window" }
 }
+
+lvim.builtin.which_key.mappings["s"] = {
+    name = "+searchbox",
+    r = { "<cmd>lua require(\"searchbox\").replace({confirm = 'menu'})<CR>", "Find/Replace" },
+    v = { "<Esc><cmd>lua require(\"searchbox\").replace({confirm = 'menu', visual_mode = true})<CR>", "Visual Find/Replace" },
+}
+lvim.builtin.which_key.mappings["S"] = {
+    name = "+Search",
+    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+    f = { "<cmd>Telescope find_files<cr>", "Find File" },
+    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
+    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
+    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
+    R = { "<cmd>Telescope registers<cr>", "Registers" },
+    t = { "<cmd>Telescope live_grep<cr>", "Text" },
+    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+    C = { "<cmd>Telescope commands<cr>", "Commands" },
+    p = {
+      "<cmd>lua require('telescope.builtin.internal').colorscheme({enable_preview = true})<cr>",
+      "Colorscheme with Preview",
+    },
+}
+
 lvim.builtin.which_key.mappings["g"]["O"] = { "<cmd>GBrowse<cr>", "Open on Github.com"}
 lvim.builtin.which_key.mappings["b"]["N"] = {":enew<cr>", "New Buffer in place"}
 lvim.builtin.which_key.mappings["b"]["X"] = {":new<cr>", "New Buffer (HSplit)"}
@@ -180,14 +207,6 @@ lvim.lsp.null_ls.setup = {
 --     exe = "flake8",
 --   }
 -- }
-lvim.lang.go.formatters = {
-  {
-    exe = "gofmt"
-  },
-    {
-        exe = "goimports"
-    }
-}
 lvim.lang.json.formatters = {
   {
     exe = "prettier"
@@ -198,19 +217,19 @@ lvim.lang.yaml.formatters = {
     exe = "prettier"
   }
 }
-lvim.lang.sh.formatters = {
-  {
-    exe = "shfmt"
-  },
-  {
-    exe = "shellharden"
-  }
-}
-lvim.lang.sh.linters = {
-  {
-    exe = "shellcheck",
-  }
-}
+-- lvim.lang.sh.formatters = {
+--   {
+--     exe = "shfmt"
+--   },
+--   {
+--     exe = "shellharden"
+--   }
+-- }
+-- lvim.lang.sh.linters = {
+--   {
+--     exe = "shellcheck",
+--   }
+-- }
 
 -- Additional Plugins
 lvim.plugins = {
@@ -264,13 +283,21 @@ lvim.plugins = {
         require "lsp_signature".setup()
         end
     },
-    { 'dense-analysis/ale' }
+    { 'dense-analysis/ale' },
+    {'ggandor/lightspeed.nvim'},
+    {
+        'VonHeikemen/searchbox.nvim',
+        requires = {
+            {'MunifTanjim/nui.nvim'}
+    }
+}
 }
 
 -- these are mostly to avoid linting when opening 3rd party repo files
 vim.g.ale_lint_on_text_changed = 'never'
 vim.g.ale_lint_on_insert_leave = 0
 vim.g.ale_lint_on_enter = 0
+vim.g.ale_fix_on_save = 1
 -- if i can figure out how to do this config in lua, this could be used to ignore 3p repo files instead of the 3 lines above
 -- let g:ale_pattern_options = {'\.min.js$': {'ale_enabled': 0}}
 vim.g.ale_linters = {
@@ -279,3 +306,12 @@ vim.g.ale_linters = {
 vim.g.ale_fixers = {
     python = {'black', 'isort', 'trim_whitespace'}
 }
+
+-- https://github.com/neovim/nvim-lspconfig/issues/662
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        virtual_text = false
+    }
+)
+-- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+lvim.lsp.diagnostics.virtual_text = false
