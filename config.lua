@@ -10,161 +10,140 @@ an executable
 
 -- general
 lvim.log.level = "warn"
-lvim.format_on_save = false
-vim.g.vscode_style = "dark"
+lvim.format_on_save = true
 lvim.colorscheme = "onedarker"
-vim.g.tokyonight_style = "storm"
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 -- unmap a default keymapping
--- lvim.keys.normal_mode["<C-Up>"] = ""
+-- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
 -- lvim.keys.normal_mode["<C-q>"] = ":q<cr>"
 
 -- Change Telescope navigation to use j and k for navigation and n and p for history in both input and normal mode.
--- lvim.builtin.telescope.on_config_done = function()
---   local actions = require "telescope.actions"
+-- we use protected-mode (pcall) just in case the plugin wasn't loaded yet.
+-- local _, actions = pcall(require, "telescope.actions")
+-- lvim.builtin.telescope.defaults.mappings = {
 --   -- for input mode
---   lvim.builtin.telescope.defaults.mappings.i["<C-j>"] = actions.move_selection_next
---   lvim.builtin.telescope.defaults.mappings.i["<C-k>"] = actions.move_selection_previous
---   lvim.builtin.telescope.defaults.mappings.i["<C-n>"] = actions.cycle_history_next
---   lvim.builtin.telescope.defaults.mappings.i["<C-p>"] = actions.cycle_history_prev
+--   i = {
+--     ["<C-j>"] = actions.move_selection_next,
+--     ["<C-k>"] = actions.move_selection_previous,
+--     ["<C-n>"] = actions.cycle_history_next,
+--     ["<C-p>"] = actions.cycle_history_prev,
+--   },
 --   -- for normal mode
---   lvim.builtin.telescope.defaults.mappings.n["<C-j>"] = actions.move_selection_next
---   lvim.builtin.telescope.defaults.mappings.n["<C-k>"] = actions.move_selection_previous
--- end
+--   n = {
+--     ["<C-j>"] = actions.move_selection_next,
+--     ["<C-k>"] = actions.move_selection_previous,
+--   },
+-- }
 
-lvim.keys.normal_mode["gdv"] = ":vsp<cr><cmd>lua vim.lsp.buf.definition()<CR>"
-lvim.keys.normal_mode["gdx"] = ":sp<cr><cmd>lua vim.lsp.buf.definition()<CR>"
-lvim.keys.normal_mode["gd<space>"] = "<cmd>lua vim.lsp.buf.definition()<CR>"
-
--- Use which-key to add extra bindings with the leader-key prefix
--- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
-lvim.builtin.which_key.mappings["P"] = { "<cmd>lua require'telescope'.extensions.project.project{}<CR>", "Projects" }
 lvim.builtin.which_key.mappings["f"] = {
-  name = "+Find",
-  r = { "<cmd>lua require('telescope.builtin').lsp_references()<cr>", "References" },
-  f = { "<cmd>lua require('telescope.builtin').find_files()<cr>", "Files" },
-  s = { "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>", "Workspace Symbols" },
-  g = { "<cmd>lua require('telescope.builtin').live_grep()<cr>", "String Grep" },
-  d = { "<cmd>lua require('telescope.builtin').lsp_document_diagnostics()<cr>", "Document Diagnostics" },
-  a = { "<cmd>lua require('telescope.builtin').lsp_range_code_actions()<cr>", "Code Actions" },
-  
+    name = "+Find",
+    r = { "<cmd>lua require('telescope.builtin').lsp_references()<cr>", "References" },
+    f = { "<cmd>lua require('telescope.builtin').find_files()<cr>", "Files" },
+    s = { "<cmd>lua require('telescope.builtin').lsp_dynamic_workspace_symbols()<cr>", "Workspace Symbols" },
+    g = { "<cmd>lua require('telescope.builtin').live_grep()<cr>", "String Grep" },
+    d = { "<cmd>lua require('telescope.builtin').lsp_document_diagnostics()<cr>", "Document Diagnostics" },
+    a = { "<cmd>lua require('telescope.builtin').lsp_range_code_actions()<cr>", "Code Actions" },
 }
+
 lvim.builtin.which_key.mappings["w"] = {
-  name = "+Window",
-  w = { "<C-w>w", "switch window" },
-  h = { "<C-w>h", "activate window left" },
-  H = { "<C-w>H", "move window to far left" },
-  l = { "<C-w>l", "activate window right" },
-  L = { "<C-w>L", "move window to far right" },
-  j = { "<C-w>j", "activate window below" },
-  k = { "<C-w>k", "activate window above" },
-  s = { "<C-w>s", "split window horizontal" },
-  v = { "<C-w>v", "split window vertical" },
-  q = { "<C-w>q", "close window" }
+    name = "+Window",
+    w = { "<C-w>w", "switch window" },
+    h = { "<C-w>h", "activate window left" },
+    H = { "<C-w>H", "move window to far left" },
+    l = { "<C-w>l", "activate window right" },
+    L = { "<C-w>L", "move window to far right" },
+    j = { "<C-w>j", "activate window below" },
+    k = { "<C-w>k", "activate window above" },
+    s = { "<C-w>s", "split window horizontal" },
+    v = { "<C-w>v", "split window vertical" },
+    q = { "<C-w>q", "close window" }
 }
 
-lvim.builtin.which_key.mappings["s"] = {
-    name = "+searchbox",
-    r = { "<cmd>lua require(\"searchbox\").replace({confirm = 'menu'})<CR>", "Find/Replace" },
-    v = { "<Esc><cmd>lua require(\"searchbox\").replace({confirm = 'menu', visual_mode = true})<CR>", "Visual Find/Replace" },
-}
-lvim.builtin.which_key.mappings["S"] = {
-    name = "+Search",
-    b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
-    c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
-    f = { "<cmd>Telescope find_files<cr>", "Find File" },
-    h = { "<cmd>Telescope help_tags<cr>", "Find Help" },
-    M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
-    r = { "<cmd>Telescope oldfiles<cr>", "Open Recent File" },
-    R = { "<cmd>Telescope registers<cr>", "Registers" },
-    t = { "<cmd>Telescope live_grep<cr>", "Text" },
-    k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
-    C = { "<cmd>Telescope commands<cr>", "Commands" },
-    p = {
-      "<cmd>lua require('telescope.builtin.internal').colorscheme({enable_preview = true})<cr>",
-      "Colorscheme with Preview",
-    },
-}
-
-lvim.builtin.which_key.mappings["g"]["O"] = { "<cmd>GBrowse<cr>", "Open on Github.com"}
-lvim.builtin.which_key.mappings["b"]["N"] = {":enew<cr>", "New Buffer in place"}
-lvim.builtin.which_key.mappings["b"]["X"] = {":new<cr>", "New Buffer (HSplit)"}
-lvim.builtin.which_key.mappings["b"]["V"] = {":vnew<cr>", "New Buffer (VSplit)"}
-lvim.builtin.which_key.mappings["b"]["T"] = {":tabnew<cr>", "New Buffer (Tab)"}
+lvim.builtin.which_key.mappings["g"]["O"] = { "<cmd>GBrowse<cr>", "Open on Github.com" }
+lvim.builtin.which_key.mappings["b"]["N"] = { ":enew<cr>", "New Buffer in place" }
+lvim.builtin.which_key.mappings["b"]["X"] = { ":new<cr>", "New Buffer (HSplit)" }
+lvim.builtin.which_key.mappings["b"]["V"] = { ":vnew<cr>", "New Buffer (VSplit)" }
+lvim.builtin.which_key.mappings["b"]["T"] = { ":tabnew<cr>", "New Buffer (Tab)" }
 lvim.builtin.which_key.mappings["b"]["m"] = {
     name = "+Move buffer to new split",
-    v = {":vsp<cr><C-w>w<C-^>", "VSplit"},
-    x = {":sp<cr><C-w>w<C-^>", "HSplit"}
+    v = { ":vsp<cr><C-w>w<C-^>", "VSplit" },
+    x = { ":sp<cr><C-w>w<C-^>", "HSplit" }
 }
 
--- TODO: User Config for predefined plugins
--- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
-lvim.builtin.dashboard.active = true
-lvim.builtin.terminal.active = true
-lvim.builtin.bufferline.active = true
-lvim.builtin.lualine.active = true
-lvim.builtin.nvimtree.side = "left"
-lvim.builtin.nvimtree.show_icons.git = 1
 vim.opt.expandtab = true -- convert tabs to spaces
 vim.opt.shiftwidth = 4 -- the number of spaces inserted for each indentation
 vim.opt.tabstop = 4 -- insert 4 spaces for a tab
 vim.opt.relativenumber = true -- set relative numbered lines
 vim.opt.termguicolors = true -- set term gui colors (most terminals support this)
 vim.opt.smartindent = true -- make indenting smarter again
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldlevel = 6
-lvim.builtin.nvimtree.ignore = { '.git', '__pycache__' }
-lvim.builtin.nvimtree.git_hl = 1
-lvim.builtin.nvimtree.hide_dotfiles = 0
-vim.g.gitblame_date_format = "%r"
+vim.opt.foldmethod = "expr" -- folding set to "expr" for treesitter based folding
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()" -- set to "nvim_treesitter#foldexpr()" for treesitter based folding
+lvim.line_wrap_cursor_movement = true --https://www.lunarvim.org/configuration/02-keybindings.html#cursor-movement
+
+-- Use which-key to add extra bindings with the leader-key prefix
+-- lvim.builtin.which_key.mappings["P"] = { "<cmd>Telescope projects<CR>", "Projects" }
+-- lvim.builtin.which_key.mappings["t"] = {
+--   name = "+Trouble",
+--   r = { "<cmd>Trouble lsp_references<cr>", "References" },
+--   f = { "<cmd>Trouble lsp_definitions<cr>", "Definitions" },
+--   d = { "<cmd>Trouble document_diagnostics<cr>", "Diagnostics" },
+--   q = { "<cmd>Trouble quickfix<cr>", "QuickFix" },
+--   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
+--   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
+-- }
+
+-- TODO: User Config for predefined plugins
+-- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
+lvim.builtin.alpha.active = true
+lvim.builtin.alpha.mode = "dashboard"
+lvim.builtin.notify.active = true
+lvim.builtin.terminal.active = true
+lvim.builtin.nvimtree.setup.view.side = "left"
+lvim.builtin.nvimtree.show_icons.git = 0
 
 -- if you don't want all the parsers change this to a table of the ones you want
-lvim.builtin.treesitter.ensure_installed = "maintained"
+lvim.builtin.treesitter.ensure_installed = {
+    "bash",
+    "c",
+    "javascript",
+    "json",
+    "lua",
+    "python",
+    "typescript",
+    "tsx",
+    "css",
+    "rust",
+    "java",
+    "yaml",
+}
+
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enabled = true
 
-
-lvim.builtin.telescope.defaults.path_display = { }
-lvim.builtin.telescope.defaults.file_sorter = require'telescope.sorters'.get_fuzzy_file
-lvim.builtin.telescope.extensions.project = {
-    base_dirs = {
-        "~/repo/baas_bsa",
-        "~/repo/baas_financial_core",
-        "~/repo/cbw-gateway-service",
-    },
-    hidden_files = true
-}
-
--- dashboard
-lvim.builtin.dashboard.custom_header = {
-  '               ▄▄██████████▄▄             ',
-  '               ▀▀▀   ██   ▀▀▀             ',
-  '       ▄██▄   ▄▄████████████▄▄   ▄██▄     ',
-  '     ▄███▀  ▄████▀▀▀    ▀▀▀████▄  ▀███▄   ',
-  '    ████▄ ▄███▀              ▀███▄ ▄████  ',
-  '   ███▀█████▀▄████▄      ▄████▄▀█████▀███ ',
-  '   ██▀  ███▀ ██████      ██████ ▀███  ▀██ ',
-  '    ▀  ▄██▀  ▀████▀  ▄▄  ▀████▀  ▀██▄  ▀  ',
-  '       ███           ▀▀           ███     ',
-  '       ██████████████████████████████     ',
-  '   ▄█  ▀██  ███   ██    ██   ███  ██▀  █▄ ',
-  '   ███  ███ ███   ██    ██   ███▄███  ███ ',
-  '   ▀██▄████████   ██    ██   ████████▄██▀ ',
-  '    ▀███▀ ▀████   ██    ██   ████▀ ▀███▀  ',
-  '     ▀███▄  ▀███████    ███████▀  ▄███▀   ',
-  '       ▀███    ▀▀██████████▀▀▀   ███▀     ',
-  '         ▀    ▄▄▄    ██    ▄▄▄    ▀       ',
-  '               ▀████████████▀             ',
-}
-
 -- generic LSP settings
--- you can set a custom on_attach function that will be used for all the language servers
--- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
+
+-- ---@usage disable automatic installation of servers
+lvim.lsp.automatic_servers_installation = false
+
+-- ---configure a server manually. !!Requires `:LvimCacheReset` to take effect!!
+-- ---see the full default list `:lua print(vim.inspect(lvim.lsp.automatic_configuration.skipped_servers))`
+-- vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "pyright" })
+-- local opts = {} -- check the lspconfig documentation for a list of all possible options
+-- require("lvim.lsp.manager").setup("pyright", opts)
+
+-- ---remove a server from the skipped list, e.g. eslint, or emmet_ls. !!Requires `:LvimCacheReset` to take effect!!
+-- ---`:LvimInfo` lists which server(s) are skiipped for the current filetype
+-- vim.tbl_map(function(server)
+--   return server ~= "emmet_ls"
+-- end, lvim.lsp.automatic_configuration.skipped_servers)
+
+-- -- you can set a custom on_attach function that will be used for all the language servers
+-- -- See <https://github.com/neovim/nvim-lspconfig#keybindings-and-completion>
 -- lvim.lsp.on_attach_callback = function(client, bufnr)
 --   local function buf_set_option(...)
 --     vim.api.nvim_buf_set_option(bufnr, ...)
@@ -172,146 +151,57 @@ lvim.builtin.dashboard.custom_header = {
 --   --Enable completion triggered by <c-x><c-o>
 --   buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
 -- end
--- you can overwrite the null_ls setup table (useful for setting the root_dir function)
-lvim.lsp.null_ls.setup = {
-  root_dir = require("lspconfig").util.root_pattern("Makefile", ".git", "node_modules", "pyproject.toml", "requirements.txt"),
+
+-- -- set a formatter, this will override the language server formatting capabilities (if it exists)
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+    { command = "black", filetypes = { "python" } },
+    { command = "isort", filetypes = { "python" } },
+    {
+        -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+        command = "prettier",
+        ---@usage arguments to pass to the formatter
+        -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+        extra_args = { "--print-with", "100" },
+        ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+        filetypes = { "typescript", "typescriptreact" },
+    },
 }
--- or if you need something more advanced
--- lvim.lsp.null_ls.setup.root_dir = function(fname)
---   if vim.bo.filetype == "javascript" then
---     return require("lspconfig/util").root_pattern("Makefile", ".git", "node_modules")(fname)
---       or require("lspconfig/util").path.dirname(fname)
---   elseif vim.bo.filetype == "php" then
---     return require("lspconfig/util").root_pattern("Makefile", ".git", "composer.json")(fname) or vim.fn.getcwd()
---   else
---     return require("lspconfig/util").root_pattern("Makefile", ".git")(fname) or require("lspconfig/util").path.dirname(fname)
---   end
--- end
 
--- set a formatter if you want to override the default lsp one (if it exists)
-
--- disabling nvim lsp diagnostic formatters because
--- 1. ale has better options for exactly when to lint (like not linting when opening 3rd party repo files)
--- 2. null ls doesn't support mypy yet (https://github.com/jose-elias-alvarez/null-ls.nvim/pull/155)
--- 3. i don't know how to configure nvim lsp without null-ls :)
-
--- lvim.lang.python.formatters = {
---   {
---     exe = "black"
---   },
---     { exe = "isort"}
-
--- }
--- lvim.lang.python.linters = {
---   {
---     exe = "flake8",
---   }
--- }
-lvim.lang.json.formatters = {
-  {
-    exe = "prettier"
-  }
+-- -- set additional linters
+local linters = require "lvim.lsp.null-ls.linters"
+linters.setup {
+    { command = "flake8", filetypes = { "python" } },
+    {
+        -- each linter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+        command = "shellcheck",
+        ---@usage arguments to pass to the formatter
+        -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+        extra_args = { "--severity", "warning" },
+    },
+    {
+        command = "codespell",
+        ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+        filetypes = { "javascript", "python" },
+    },
 }
-lvim.lang.yaml.formatters = {
-  {
-    exe = "prettier"
-  }
-}
--- lvim.lang.sh.formatters = {
---   {
---     exe = "shfmt"
---   },
---   {
---     exe = "shellharden"
---   }
--- }
--- lvim.lang.sh.linters = {
---   {
---     exe = "shellcheck",
---   }
--- }
 
 -- Additional Plugins
 lvim.plugins = {
-    {"folke/tokyonight.nvim"},
-    {"Mofiqul/vscode.nvim"},
-    {"dracula/vim"},
-    {
-        "nvim-telescope/telescope-project.nvim",
-        event = "BufWinEnter",
-        setup = function()
-            vim.cmd [[packadd telescope.nvim]]
-        end,
-    },
-    {
-        "f-person/git-blame.nvim",
-        event = "BufRead",
-        config = function()
-            vim.cmd "highlight default link gitblame SpecialComment"
-            vim.g.gitblame_enabled = 1
-            vim.g.gitblame_date_format = '%x'
-        end,
-    },
-    {
-      "tpope/vim-fugitive",
-      cmd = {
-        "G",
-        "Git",
-        "Gdiffsplit",
-        "Gread",
-        "Gwrite",
-        "Ggrep",
-        "GMove",
-        "GDelete",
-        "GBrowse",
-        "GRemove",
-        "GRename",
-        "Glgrep",
-        "Gedit"
-      },
-      ft = {"fugitive"}
-    },
-    { "tpope/vim-rhubarb" },
-    {
-        "pwntester/octo.nvim",
-        event = "BufRead",
-    },
     {
         "ray-x/lsp_signature.nvim",
-        event = "InsertEnter",
+        event = "BufRead",
         config = function()
-        require "lsp_signature".setup()
+            require "lsp_signature".setup()
         end
     },
-    { 'dense-analysis/ale' },
-    {'ggandor/lightspeed.nvim'},
     {
-        'VonHeikemen/searchbox.nvim',
-        requires = {
-            {'MunifTanjim/nui.nvim'}
-    }
-}
+        "simrat39/symbols-outline.nvim",
+        cmd = "SymbolsOutline",
+    },
 }
 
--- these are mostly to avoid linting when opening 3rd party repo files
-vim.g.ale_lint_on_text_changed = 'never'
-vim.g.ale_lint_on_insert_leave = 0
-vim.g.ale_lint_on_enter = 0
-vim.g.ale_fix_on_save = 1
--- if i can figure out how to do this config in lua, this could be used to ignore 3p repo files instead of the 3 lines above
--- let g:ale_pattern_options = {'\.min.js$': {'ale_enabled': 0}}
-vim.g.ale_linters = {
-    python = {'mypy', 'flake8'}
-}
-vim.g.ale_fixers = {
-    python = {'black', 'isort', 'trim_whitespace'}
-}
-
--- https://github.com/neovim/nvim-lspconfig/issues/662
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-        virtual_text = false
-    }
-)
--- vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
-lvim.lsp.diagnostics.virtual_text = false
+-- Autocommands (https://neovim.io/doc/user/autocmd.html)
+-- lvim.autocommands.custom_groups = {
+--   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
+-- }
