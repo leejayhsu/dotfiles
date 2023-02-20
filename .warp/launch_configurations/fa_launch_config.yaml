@@ -5,12 +5,12 @@
 # Open the launch configuration palette to access and open any launch configuration
 #
 # This file defines your launch configuration
-# More on how to do so here: 
+# More on how to do so here:
 # https://docs.warp.dev/features/session-management/launch-configurations
 #
 # All launch configurations are stored under ~/.warp/launch_configurations/
 # Edit them anytime!
-# 
+#
 # You can also add commands that run on-start for your launch configurations like so:
 # ---
 # name: Example with Command
@@ -22,32 +22,15 @@
 #            - exec: code .
 
 ---
-name: Fund Admin
+name: Cushion-up
 windows:
   - tabs:
       - layout:
           split_direction: horizontal
           panes:
-            - split_direction: vertical
-              panes:
-                - cwd: /Users/leejay/projects/fund-admin
-                  commands:
-                    - exec: devspace dev
-                - cwd: /Users/leejay/projects/fund-admin
-                  commands:
-                    - exec: fa grpc
-                - cwd: /Users/leejay/projects/fund-admin
-                  commands:
-                    - exec: fa rpc
-            - split_direction: vertical
-              panes:
-                - cwd: /Users/leejay/projects/fund-admin
-                  commands:
-                    - exec: fa yarn
-                - cwd: /Users/leejay/projects/fund-admin
-                  commands:
-                    - exec: fa runserver
-      - layout:
-          cwd: /Users/leejay/projects/fund-admin
-          commands: 
-            - exec: k9s
+            - cwd: /Users/leejay/code/cushion_webapp
+              commands:
+                - exec: pipenv run python manage.py runserver --settings=cushion_webapp.settings.staging
+            - cwd: /Users/leejay/code/cushion_webapp_ui
+              commands:
+                - exec: npm start
